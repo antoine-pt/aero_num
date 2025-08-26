@@ -197,22 +197,27 @@ def error_L1(data,numeric,analytic,plot=False,string=None):
         plt.ylabel("Temperature (C)")
         plt.title(string)
         plt.legend()
+        plt.grid()
         plt.savefig(f"{string}.png", dpi=300, bbox_inches="tight")
-        plt.show()
+        # plt.show()
         plt.close()
 
     somme_L1 = sum(data.dx*abs(numeric[i]-analytic[i]) for i in range(data.resolution))
     return somme_L1[0]/data.length
 
 def error_L1_graph(error,resolution,string=None):
-    plt.plot(resolution,error,label="error")
-    plt.xlabel("Resolution (-)")
-    plt.ylabel("Error (-)")
+    plt.plot(np.log(1/resolution),np.log(error),label="error")
+    plt.xlabel("ln(h) (-) -- h~1/resolution")
+    plt.ylabel("ln(Error) (-)")
     plt.title(string)
+    plt.grid()
     plt.legend()
     plt.savefig(f"{string}.png", dpi=300, bbox_inches="tight")
-    plt.show()
+    # plt.show()
     plt.close()
+
+    ordre = (np.log(error[-1]/error[0])/np.log((1/resolution[-1])/(1/resolution[0])))
+    return ordre
 
 
 if __name__ == "__main__":
@@ -245,7 +250,7 @@ if __name__ == "__main__":
 
     ## Analyse probleme 1
 
-    nStep=5
+    nStep=10
     err = np.zeros(nStep)
     resolution = np.zeros(nStep)
 
@@ -263,7 +268,8 @@ if __name__ == "__main__":
         plot=False
     
     title = "Problem 4.1 - Error analysis"
-    error_L1_graph(err,resolution,title)
+    print("Ordre de l'erreur 4.1 : ", error_L1_graph(err,resolution,title))
+
 
 
     ## Problem 2:
@@ -313,7 +319,7 @@ if __name__ == "__main__":
         plot=False
 
     title = "Problem 4.2 - Error analysis"
-    error_L1_graph(err,resolution,title)
+    print("Ordre de l'erreur 4.2: ", error_L1_graph(err,resolution,title))
 
     ## Problem 3:
     def _parameters3(data):
@@ -363,4 +369,4 @@ if __name__ == "__main__":
         plot=False
 
     title = "Problem 4.3 - Error analysis"
-    error_L1_graph(err,resolution,title)
+    print("Ordre de l'erreur 4.3: ", error_L1_graph(err,resolution,title))
