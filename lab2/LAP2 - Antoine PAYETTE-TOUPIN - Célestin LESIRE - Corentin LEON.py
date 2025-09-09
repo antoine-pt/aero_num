@@ -431,7 +431,7 @@ if __name__ == "__main__":
     print("------------------------------------------")
 
 
-    nStep=20 ## augmenter le nombre de step pour voir l'ordre de convergence
+    nStep=12 ## augmenter le nombre de step pour voir l'ordre de convergence
     err = np.zeros(nStep)
     resolution = np.zeros(nStep)
     peclet = data1.rho*data1.velocity*data1.length/data1.conduction
